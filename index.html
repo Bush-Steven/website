@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriQueue Technologies — Smart Queue & IT Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0a1628;
+            --navy-light: #111d32;
+            --green: #00c853;
+            --green-glow: rgba(0, 200, 83, 0.3);
+            --green-dim: rgba(0, 200, 83, 0.1);
+            --accent: #ff6b35;
+            --accent-glow: rgba(255, 107, 53, 0.3);
+            --text: #e8ecf1;
+            --text-muted: #8b95a5;
+            --text-dim: #5a6478;
+            --bg: #070d17;
+            --bg-elevated: #0f1929;
+            --bg-card: rgba(15, 25, 41, 0.6);
+            --border: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(0, 200, 83, 0.3);
+            --glass: rgba(15, 25, 41, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 40px var(--green-glow);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --text: #0a1628;
+            --text-muted: #5a6478;
+            --text-dim: #8b95a5;
+            --bg: #f5f7fa;
+            --bg-elevated: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --border: rgba(0, 0, 0, 0.06);
+            --border-hover: rgba(0, 200, 83, 0.4);
+            --glass: rgba(255, 255, 255, 0.5);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 40px rgba(0, 200, 83, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        /* Gradient Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+        .orb-1 { width: 600px; height: 600px; background: var(--green); top: -200px; right: -100px; animation-delay: 0s; }
+        .orb-2 { width: 400px; height: 400px; background: var(--accent); bottom: 10%; left: -150px; animation-delay: -7s; opacity: 0.2; }
+        .orb-3 { width: 300px; height: 300px; background: #6366f1; top: 40%; right: 10%; animation-delay: -14s; opacity: 0.15; }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 30px) scale(0.95); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        nav.scrolled {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0.7rem 5%;
+        }
+        .nav-logo { display: flex; align-items: center; gap: 0.8rem; }
+        .nav-logo img { height: 42px; width: auto; filter: brightness(1.1); transition: var(--transition); }
+        .nav-logo span { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.3rem; color: var(--text); letter-spacing: -0.5px; }
+        .nav-logo span .q { color: var(--green); }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            position: relative;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--text); }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px; left: 50%;
+            width: 0; height: 2px;
+            background: var(--green);
+            border-radius: 2px;
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-cta {
+            background: var(--green);
+            color: #000 !important;
+            padding: 0.6rem 1.4rem;
+            border-radius: 100px;
+            font-weight: 600 !important;
+            font-size: 0.85rem !important;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px var(--green-glow);
+        }
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--green-glow); }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .theme-toggle {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--glass);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+        .theme-toggle:hover { border-color: var(--green); color: var(--green); }
+        .mobile-menu { display: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
+        .mobile-nav { display: none; position: fixed; top: 0; right: -100%; width: 300px; height: 100vh; background: var(--bg-elevated); z-index: 1001; padding: 6rem 2rem 2rem; transition: right 0.4s ease; border-left: 1px solid var(--border); }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav .close-menu { position: absolute; top: 1.5rem; right: 1.5rem; color: var(--text); font-size: 1.5rem; cursor: pointer; }
+        .mobile-nav ul { list-style: none; display: flex; flex-direction: column; gap: 1.8rem; }
+        .mobile-nav ul li a { color: var(--text); text-decoration: none; font-size: 1.1rem; font-weight: 500; transition: color 0.3s; display: block; }
+        .mobile-nav ul li a:hover { color: var(--green); }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; }
+        .overlay.active { display: block; }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 5% 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--green-dim);
+            border: 1px solid var(--border-hover);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            color: var(--green);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        .hero-badge i { font-size: 0.7rem; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            margin-bottom: 1.2rem;
+            letter-spacing: -1px;
+        }
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, var(--green), #00e676);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-desc {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            max-width: 520px;
+        }
+        .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+        .btn {
+            padding: 1rem 2.2rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary {
+            background: var(--green);
+            color: #000;
+            box-shadow: 0 4px 24px var(--green-glow);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 40px var(--green-glow); }
+        .btn-glass {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text);
+            backdrop-filter: blur(10px);
+        }
+        .btn-glass:hover { border-color: var(--green); background: var(--green-dim); color: var(--green); }
+        .hero-stats { display: flex; gap: 3rem; }
+        .hero-stat h3 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: var(--green); }
+        .hero-stat p { color: var(--text-dim); font-size: 0.85rem; margin-top: 0.3rem; }
+
+        /* Glass Card */
+        .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: var(--shadow), 0 0 60px rgba(0, 200, 83, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green), transparent, var(--accent));
+        }
+        .glass-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .glass-card .card-header h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .live-dot { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--green); }
+        .live-dot::before { content: ''; width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; box-shadow: 0 0 10px var(--green); }
+        .now-serving-glass {
+            background: linear-gradient(135deg, rgba(0, 200, 83, 0.15), rgba(0, 200, 83, 0.05));
+            border: 1px solid rgba(0, 200, 83, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .now-serving-glass .label { font-size: 0.8rem; color: var(--green); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem; font-weight: 600; }
+        .now-serving-glass .number { font-family: 'Space Grotesk', sans-serif; font-size: 4rem; font-weight: 700; color: var(--text); line-height: 1; text-shadow: 0 0 30px var(--green-glow); }
+        .now-serving-glass .counter { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; }
+        .queue-list-glass { display: flex; flex-direction: column; gap: 0.6rem; }
+        .queue-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .queue-row:hover { border-color: var(--border-hover); background: rgba(0, 200, 83, 0.05); }
+        .queue-row .ticket { font-weight: 700; color: var(--green); font-size: 0.95rem; }
+        .queue-row .counter { color: var(--text-muted); font-size: 0.85rem; }
+        .queue-row .time { color: var(--text-dim); font-size: 0.8rem; }
+
+        /* Sections */
+        section { padding: 6rem 5%; position: relative; z-index: 1; }
+        .section-header { text-align: center; max-width: 700px; margin: 0 auto 4rem; }
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--green-dim);
+            border: 1px solid var(--border-hover);
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            color: var(--green);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+        .section-header p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; }
+
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .service-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--green), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .service-card:hover::before { opacity: 1; }
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow), 0 0 40px rgba(0, 200, 83, 0.08);
+        }
+        .service-card img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.5s ease; }
+        .service-card:hover img { transform: scale(1.05); }
+        .service-body { padding: 1.8rem; }
+        .service-icon-wrap {
+            width: 48px; height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            background: var(--green-dim);
+            color: var(--green);
+            border: 1px solid var(--border-hover);
+        }
+        .service-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; margin-bottom: 0.6rem; }
+        .service-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+        .service-features { margin-top: 1.2rem; list-style: none; }
+        .service-features li { display: flex; align-items: center; gap: 0.6rem; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.4rem; }
+        .service-features li i { color: var(--green); font-size: 0.7rem; }
+
+        /* Solutions */
+        .solutions { background: var(--bg-elevated); }
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .solution-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .solution-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 200px; height: 200px;
+            background: var(--green);
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .solution-card:hover::after { opacity: 0.08; }
+        .solution-card:hover { transform: translateY(-5px); border-color: var(--border-hover); }
+        .solution-card .sol-icon {
+            width: 50px; height: 50px;
+            border-radius: var(--radius-sm);
+            background: var(--green-dim);
+            border: 1px solid var(--border-hover);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; color: var(--green);
+            margin-bottom: 1.2rem;
+            position: relative; z-index: 1;
+        }
+        .solution-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; margin-bottom: 0.8rem; position: relative; z-index: 1; }
+        .solution-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1rem; position: relative; z-index: 1; }
+        .solution-card ul { list-style: none; position: relative; z-index: 1; }
+        .solution-card ul li { display: flex; align-items: center; gap: 0.6rem; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.4rem; }
+        .solution-card ul li i { color: var(--green); font-size: 0.75rem; }
+
+        /* About */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        .about-img-wrap {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .about-img-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--green-glow), transparent);
+            z-index: 1;
+            opacity: 0.3;
+        }
+        .about-img-wrap img { width: 100%; border-radius: var(--radius); display: block; }
+        .about-content h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 1rem; letter-spacing: -1px; }
+        .about-content .lead { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem; }
+        .about-content p { color: var(--text-dim); line-height: 1.7; margin-bottom: 1rem; font-size: 0.95rem; }
+        .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+        .about-stat {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .about-stat:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+        .about-stat .num { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: var(--green); }
+        .about-stat .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem; }
+        .mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+        .mv-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem;
+            border-left: 3px solid var(--green);
+            transition: var(--transition);
+        }
+        .mv-card:hover { border-color: var(--border-hover); transform: translateX(5px); }
+        .mv-card h4 { font-family: 'Space Grotesk', sans-serif; color: var(--text); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; }
+        .mv-card h4 i { color: var(--green); }
+        .mv-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
+
+        /* Blog */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .blog-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .blog-card:hover { transform: translateY(-8px); border-color: var(--border-hover); box-shadow: var(--shadow); }
+        .blog-card img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.5s ease; }
+        .blog-card:hover img { transform: scale(1.05); }
+        .blog-body { padding: 1.5rem; }
+        .blog-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem; font-size: 0.8rem; color: var(--text-dim); }
+        .blog-meta .cat { background: var(--green-dim); color: var(--green); padding: 0.2rem 0.8rem; border-radius: 100px; font-weight: 600; font-size: 0.75rem; border: 1px solid var(--border-hover); }
+        .blog-body h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; margin-bottom: 0.6rem; line-height: 1.4; }
+        .blog-body p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; }
+        .read-more { color: var(--green); font-weight: 600; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; transition: gap 0.3s; }
+        .read-more:hover { gap: 0.8rem; }
+
+        /* Why Us */
+        .why-us { background: var(--bg-elevated); }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .feature-item {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .feature-item:hover { transform: translateY(-5px); border-color: var(--border-hover); box-shadow: 0 0 30px rgba(0, 200, 83, 0.05); }
+        .feature-item .f-icon {
+            width: 60px; height: 60px;
+            border-radius: var(--radius-sm);
+            background: var(--green-dim);
+            border: 1px solid var(--border-hover);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.4rem; color: var(--green);
+            transition: var(--transition);
+        }
+        .feature-item:hover .f-icon { transform: scale(1.1); box-shadow: 0 0 20px var(--green-glow); }
+        .feature-item h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .feature-item p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .contact-info h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 1rem; }
+        .contact-info > p { color: var(--text-muted); line-height: 1.7; margin-bottom: 2.5rem; }
+        .contact-details { display: flex; flex-direction: column; gap: 1.2rem; }
+        .contact-item { display: flex; align-items: center; gap: 1rem; }
+        .contact-item .c-icon {
+            width: 48px; height: 48px;
+            border-radius: var(--radius-sm);
+            background: var(--green-dim);
+            border: 1px solid var(--border-hover);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--green); font-size: 1.1rem;
+            transition: var(--transition);
+        }
+        .contact-item:hover .c-icon { box-shadow: 0 0 20px var(--green-glow); transform: scale(1.05); }
+        .contact-item div strong { display: block; margin-bottom: 0.2rem; font-size: 0.9rem; color: var(--text); }
+        .contact-item div span { color: var(--text-muted); font-size: 0.85rem; }
+        .contact-form {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            transition: var(--transition);
+        }
+        .contact-form:hover { border-color: var(--border-hover); }
+        .form-group { margin-bottom: 1.3rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px var(--green-dim);
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-dim); }
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        .form-group select option { background: var(--bg-elevated); color: var(--text); }
+
+        /* Footer */
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 4rem 5% 2rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-brand img { height: 55px; margin-bottom: 1rem; }
+        .footer-brand p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1rem; }
+        .footer-brand .tagline { color: var(--green); font-style: italic; font-size: 0.9rem; }
+        .footer-col h4 { font-family: 'Space Grotesk', sans-serif; color: var(--text); font-size: 1rem; margin-bottom: 1.2rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.7rem; }
+        .footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-col ul li a:hover { color: var(--green); }
+        .social-links { display: flex; gap: 0.8rem; margin-top: 1rem; }
+        .social-links a {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); text-decoration: none;
+            transition: var(--transition); font-size: 0.9rem;
+        }
+        .social-links a:hover { background: var(--green-dim); border-color: var(--green); color: var(--green); transform: translateY(-3px); }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        /* Animations */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .hero-visual { order: -1; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .mv-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu { display: block; }
+            .hero { padding-top: 100px; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .about-stats { grid-template-columns: 1fr; }
+            section { padding: 4rem 5%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Gradient Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <a href="#home" class="nav-logo">
+            <img src="logo.png" alt="AfriQueue">
+            <span>Afri<span class="q">Queue</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#solutions">Solutions</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact" class="nav-cta">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                <i class="fas fa-sun" id="themeIcon"></i>
+            </button>
+            <div class="mobile-menu" id="menuToggle"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+    <div class="overlay" id="overlay"></div>
+    <div class="mobile-nav" id="mobileNav">
+        <div class="close-menu" id="closeMenu"><i class="fas fa-times"></i></div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#solutions">Solutions</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact" class="nav-cta-mobile">Contact Us</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fas fa-circle"></i> Now Serving Africa's Digital Future</div>
+                <h1>Smart Queue<br><span class="gradient-text">Management</span><br>System</h1>
+                <p class="hero-desc">Our intelligent queue management solutions help organizations streamline customer flow, reduce waiting time and improve service delivery across hospitals, banks, schools, and government offices.</p>
+                <div class="hero-buttons">
+                    <a href="#services" class="btn btn-primary"><i class="fas fa-rocket"></i>Explore Services</a>
+                    <a href="#contact" class="btn btn-glass"><i class="fas fa-play"></i>Watch Demo</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat"><h3>50+</h3><p>Clients Served</p></div>
+                    <div class="hero-stat"><h3>4</h3><p>Countries</p></div>
+                    <div class="hero-stat"><h3>24/7</h3><p>Support</p></div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="glass-card">
+                    <div class="card-header"><h4>Live Queue Monitor</h4><div class="live-dot">LIVE</div></div>
+                    <div class="now-serving-glass">
+                        <div class="label">Now Serving</div>
+                        <div class="number">A 123</div>
+                        <div class="counter">Counter 2</div>
+                    </div>
+                    <div class="queue-list-glass">
+                        <div class="queue-row"><span class="ticket">A 124</span><span class="counter">Counter 3</span><span class="time">2 min</span></div>
+                        <div class="queue-row"><span class="ticket">B 045</span><span class="counter">Counter 1</span><span class="time">5 min</span></div>
+                        <div class="queue-row"><span class="ticket">A 125</span><span class="counter">Counter 2</span><span class="time">8 min</span></div>
+                        <div class="queue-row"><span class="ticket">C 012</span><span class="counter">Counter 4</span><span class="time">12 min</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services" id="services">
+        <div class="section-header fade-in">
+            <span class="section-tag"><i class="fas fa-layer-group"></i> What We Do</span>
+            <h2>Our Core Services</h2>
+            <p>Comprehensive technology solutions designed to streamline operations, enhance security, and drive digital transformation across industries.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card fade-in stagger-1">
+                <img src="img-queue.jpg" alt="Queue Management">
+                <div class="service-body">
+                    <div class="service-icon-wrap"><i class="fas fa-users-line"></i></div>
+                    <h3>Queue Management Systems</h3>
+                    <p>Intelligent queue solutions for schools, banks, and hospitals that reduce wait times and improve customer experience.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Digital ticketing & SMS alerts</li>
+                        <li><i class="fas fa-check"></i> Real-time queue analytics</li>
+                        <li><i class="fas fa-check"></i> Multi-counter management</li>
+                        <li><i class="fas fa-check"></i> Appointment scheduling</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-card fade-in stagger-2">
+                <img src="img-telemedicine.jpg" alt="Telemedicine">
+                <div class="service-body">
+                    <div class="service-icon-wrap"><i class="fas fa-heart-pulse"></i></div>
+                    <h3>Telemedicine Software</h3>
+                    <p>Secure virtual healthcare platforms connecting patients with doctors through video consultations and digital health records.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> HD video consultations</li>
+                        <li><i class="fas fa-check"></i> Electronic health records</li>
+                        <li><i class="fas fa-check"></i> Prescription management</li>
+                        <li><i class="fas fa-check"></i> HIPAA-compliant security</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-card fade-in stagger-3">
+                <img src="img-cybersecurity.jpg" alt="Cybersecurity">
+                <div class="service-body">
+                    <div class="service-icon-wrap"><i class="fas fa-shield-halved"></i></div>
+                    <h3>Cybersecurity Awareness</h3>
+                    <p>Comprehensive training programs and security audits to protect your organization from evolving cyber threats.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Employee security training</li>
+                        <li><i class="fas fa-check"></i> Phishing simulations</li>
+                        <li><i class="fas fa-check"></i> Vulnerability assessments</li>
+                        <li><i class="fas fa-check"></i> Incident response planning</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-card fade-in stagger-1">
+                <img src="img-cctv.jpg" alt="CCTV">
+                <div class="service-body">
+                    <div class="service-icon-wrap"><i class="fas fa-video"></i></div>
+                    <h3>CCTV Installation</h3>
+                    <p>Professional surveillance systems with remote monitoring capabilities for businesses, schools, and healthcare facilities.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> HD & 4K camera systems</li>
+                        <li><i class="fas fa-check"></i> Cloud & local storage</li>
+                        <li><i class="fas fa-check"></i> Mobile app monitoring</li>
+                        <li><i class="fas fa-check"></i> Night vision & AI analytics</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-card fade-in stagger-2">
+                <img src="img-software.jpg" alt="Software">
+                <div class="service-body">
+                    <div class="service-icon-wrap"><i class="fas fa-code"></i></div>
+                    <h3>Software Solutions</h3>
+                    <p>Custom software development, enterprise applications, and digital platforms built to solve your unique business challenges.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Custom web & mobile apps</li>
+                        <li><i class="fas fa-check"></i> ERP & CRM systems</li>
+                        <li><i class="fas fa-check"></i> API integrations</li>
+                        <li><i class="fas fa-check"></i> Cloud migration</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-card fade-in stagger-3">
+                <img src="img-hardware.jpg" alt="Hardware">
+                <div class="service-body">
+                    <div class="service-icon-wrap"><i class="fas fa-server"></i></div>
+                    <h3>Hardware & IT Infrastructure</h3>
+                    <p>End-to-end hardware procurement, network setup, and IT infrastructure management for optimal performance.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Server installation & config</li>
+                        <li><i class="fas fa-check"></i> Network design & setup</li>
+                        <li><i class="fas fa-check"></i> Computer & peripheral supply</li>
+                        <li><i class="fas fa-check"></i> Maintenance & support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions -->
+    <section class="solutions" id="solutions">
+        <div class="section-header fade-in">
+            <span class="section-tag"><i class="fas fa-puzzle-piece"></i> Solutions</span>
+            <h2>Tailored for Your Industry</h2>
+            <p>We do not believe in one-size-fits-all. Every solution is customized to meet the specific needs of your organization.</p>
+        </div>
+        <div class="solutions-grid">
+            <div class="solution-card fade-in stagger-1">
+                <div class="sol-icon"><i class="fas fa-hospital-user"></i></div>
+                <h3>Healthcare Solutions</h3>
+                <p>From patient queue management to telemedicine platforms, we help hospitals and clinics deliver better care with less waiting.</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Patient flow optimization</li>
+                    <li><i class="fas fa-check-circle"></i> Virtual consultation platforms</li>
+                    <li><i class="fas fa-check-circle"></i> Medical records digitization</li>
+                    <li><i class="fas fa-check-circle"></i> Pharmacy queue management</li>
+                </ul>
+            </div>
+            <div class="solution-card fade-in stagger-2">
+                <div class="sol-icon"><i class="fas fa-university"></i></div>
+                <h3>Banking & Finance</h3>
+                <p>Reduce customer wait times and improve branch efficiency with intelligent banking queue and digital signage.</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Branch queue automation</li>
+                    <li><i class="fas fa-check-circle"></i> VIP customer prioritization</li>
+                    <li><i class="fas fa-check-circle"></i> Digital signage integration</li>
+                    <li><i class="fas fa-check-circle"></i> Real-time service analytics</li>
+                </ul>
+            </div>
+            <div class="solution-card fade-in stagger-3">
+                <div class="sol-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3>Education Institutions</h3>
+                <p>Streamline administrative processes and improve student services with school-focused queue and IT solutions.</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Student service queues</li>
+                    <li><i class="fas fa-check-circle"></i> Exam registration systems</li>
+                    <li><i class="fas fa-check-circle"></i> Campus security (CCTV)</li>
+                    <li><i class="fas fa-check-circle"></i> IT lab infrastructure</li>
+                </ul>
+            </div>
+            <div class="solution-card fade-in stagger-1">
+                <div class="sol-icon"><i class="fas fa-landmark"></i></div>
+                <h3>Government & Public Sector</h3>
+                <p>Modernize public service delivery with transparent, efficient queue systems and robust IT infrastructure.</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Citizen service centers</li>
+                    <li><i class="fas fa-check-circle"></i> Revenue collection queues</li>
+                    <li><i class="fas fa-check-circle"></i> Document processing</li>
+                    <li><i class="fas fa-check-circle"></i> Public security systems</li>
+                </ul>
+            </div>
+            <div class="solution-card fade-in stagger-2">
+                <div class="sol-icon"><i class="fas fa-shield-halved"></i></div>
+                <h3>Enterprise Security</h3>
+                <p>Protect your organization with comprehensive cybersecurity awareness and physical security infrastructure.</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Security awareness training</li>
+                    <li><i class="fas fa-check-circle"></i> Penetration testing</li>
+                    <li><i class="fas fa-check-circle"></i> CCTV & access control</li>
+                    <li><i class="fas fa-check-circle"></i> Compliance auditing</li>
+                </ul>
+            </div>
+            <div class="solution-card fade-in stagger-3">
+                <div class="sol-icon"><i class="fas fa-cloud"></i></div>
+                <h3>Cloud & Digital Transformation</h3>
+                <p>Accelerate your digital journey with cloud migration, custom software, and modern IT infrastructure.</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Cloud migration strategy</li>
+                    <li><i class="fas fa-check-circle"></i> Custom application development</li>
+                    <li><i class="fas fa-check-circle"></i> Data center modernization</li>
+                    <li><i class="fas fa-check-circle"></i> 24/7 managed IT services</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="about-grid">
+            <div class="about-content fade-in">
+                <span class="section-tag"><i class="fas fa-building"></i> About Us</span>
+                <h2>Transforming Africa<br>Through Technology</h2>
+                <p class="lead">Founded in 2015, AfriQueue Technologies has grown from a small Nairobi startup to one of East Africa's most trusted technology partners.</p>
+                <p>We are a team of passionate technologists, engineers, and innovators dedicated to solving Africa's most pressing operational challenges. Our journey began with a simple mission: to eliminate long queues and waiting times in public and private institutions across the continent.</p>
+                <p>Today, we serve over 50 clients across Kenya, Uganda, Tanzania, and Rwanda — delivering smart queue management systems, telemedicine platforms, cybersecurity training, CCTV installations, and comprehensive IT infrastructure solutions.</p>
+                <div class="mv-grid">
+                    <div class="mv-card">
+                        <h4><i class="fas fa-bullseye"></i> Our Mission</h4>
+                        <p>To empower African organizations with intelligent, affordable technology solutions that improve efficiency, security, and customer satisfaction.</p>
+                    </div>
+                    <div class="mv-card">
+                        <h4><i class="fas fa-eye"></i> Our Vision</h4>
+                        <p>To become Africa's leading technology solutions provider, driving digital transformation one organization at a time.</p>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="about-stat"><div class="num">50+</div><div class="label">Clients Served</div></div>
+                    <div class="about-stat"><div class="num">4</div><div class="label">Countries</div></div>
+                    <div class="about-stat"><div class="num">10+</div><div class="label">Years Experience</div></div>
+                </div>
+            </div>
+            <div class="about-img-wrap fade-in">
+                <img src="img-team-africa.jpg" alt="AfriQueue Team">
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog -->
+    <section class="blog" id="blog">
+        <div class="section-header fade-in">
+            <span class="section-tag"><i class="fas fa-pen-nib"></i> Insights</span>
+            <h2>Latest from Our Blog</h2>
+            <p>Stay updated with the latest trends, insights, and best practices in technology and digital transformation across Africa.</p>
+        </div>
+        <div class="blog-grid">
+            <div class="blog-card fade-in stagger-1">
+                <img src="img-queue-hospital.jpg" alt="Healthcare Queue">
+                <div class="blog-body">
+                    <div class="blog-meta"><span class="cat">Queue Management</span><span><i class="far fa-calendar"></i> Jun 10, 2026</span></div>
+                    <h3>How Smart Queue Systems Are Revolutionizing Healthcare in Africa</h3>
+                    <p>Discover how hospitals across East Africa are reducing patient wait times by up to 60% with digital queue management solutions.</p>
+                    <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="blog-card fade-in stagger-2">
+                <img src="img-digital-africa.jpg" alt="Digital Transformation">
+                <div class="blog-body">
+                    <div class="blog-meta"><span class="cat">Digital Transformation</span><span><i class="far fa-calendar"></i> May 28, 2026</span></div>
+                    <h3>The Future of Digital Transformation in African Banks</h3>
+                    <p>Explore the key technologies shaping the future of banking in Africa and how institutions can stay ahead of the curve.</p>
+                    <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="blog-card fade-in stagger-3">
+                <img src="img-cybersecurity.jpg" alt="Cybersecurity">
+                <div class="blog-body">
+                    <div class="blog-meta"><span class="cat">Cybersecurity</span><span><i class="far fa-calendar"></i> May 15, 2026</span></div>
+                    <h3>5 Cybersecurity Threats Every African Business Should Know in 2026</h3>
+                    <p>From phishing to ransomware, learn about the top cybersecurity threats targeting African businesses and how to protect your organization.</p>
+                    <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us -->
+    <section class="why-us" id="why-us">
+        <div class="section-header fade-in">
+            <span class="section-tag"><i class="fas fa-star"></i> Why AfriQueue</span>
+            <h2>Built for African Excellence</h2>
+            <p>We understand the unique challenges of operating in Africa and design solutions that work in your environment.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-item fade-in stagger-1">
+                <div class="f-icon"><i class="fas fa-bolt"></i></div>
+                <h3>Fast Implementation</h3>
+                <p>Quick deployment with minimal disruption to your operations.</p>
+            </div>
+            <div class="feature-item fade-in stagger-2">
+                <div class="f-icon"><i class="fas fa-hand-holding-dollar"></i></div>
+                <h3>Cost Effective</h3>
+                <p>Competitive pricing without compromising on quality or security.</p>
+            </div>
+            <div class="feature-item fade-in stagger-3">
+                <div class="f-icon"><i class="fas fa-headset"></i></div>
+                <h3>Local Support</h3>
+                <p>Dedicated support teams available across the region.</p>
+            </div>
+            <div class="feature-item fade-in stagger-1">
+                <div class="f-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3>Training Included</h3>
+                <p>Comprehensive training for your staff on all our solutions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <div class="contact-grid">
+            <div class="contact-info fade-in">
+                <span class="section-tag"><i class="fas fa-envelope"></i> Get In Touch</span>
+                <h2>Let's Discuss<br>Your Project</h2>
+                <p>Ready to transform your organization with smart technology? Reach out to us and our team will get back to you within 24 hours.</p>
+                <div class="contact-details">
+                    <div class="contact-item"><div class="c-icon"><i class="fas fa-location-dot"></i></div><div><strong>Location</strong><span>Nairobi, Kenya</span></div></div>
+                    <div class="contact-item"><div class="c-icon"><i class="fas fa-envelope"></i></div><div><strong>Email</strong><span>info@afriqueue.com</span></div></div>
+                    <div class="contact-item"><div class="c-icon"><i class="fas fa-phone"></i></div><div><strong>Phone</strong><span>0722 581 557</span></div></div>
+                    <div class="contact-item"><div class="c-icon"><i class="fas fa-globe"></i></div><div><strong>Website</strong><span>www.afriqueue.com</span></div></div>
+                    <div class="contact-item"><div class="c-icon"><i class="fas fa-clock"></i></div><div><strong>Working Hours</strong><span>Mon - Fri: 8:00 AM - 6:00 PM</span></div></div>
+                </div>
+            </div>
+            <div class="contact-form fade-in">
+                <form onsubmit="event.preventDefault(); alert('Thank you! We will get back to you within 24 hours.');">
+                    <div class="form-group"><label>Full Name</label><input type="text" placeholder="John Doe" required></div>
+                    <div class="form-group"><label>Email Address</label><input type="email" placeholder="john@example.com" required></div>
+                    <div class="form-group">
+                        <label>Service Interested In</label>
+                        <select required>
+                            <option value="">Select a service...</option>
+                            <option>Queue Management</option>
+                            <option>Telemedicine Software</option>
+                            <option>Cybersecurity Training</option>
+                            <option>CCTV Installation</option>
+                            <option>Software Solutions</option>
+                            <option>Hardware & Infrastructure</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Your Message</label><textarea placeholder="Tell us about your project..." required></textarea></div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;"><i class="fas fa-paper-plane"></i>Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="logo.png" alt="AfriQueue Technologies">
+                <p>Transforming Africa through innovative technology solutions. We deliver smart queue management, telemedicine, cybersecurity, and IT infrastructure services tailored for the African market.</p>
+                <p class="tagline">"Powered by intelligence. Driven by service."</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#solutions">Solutions</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#services">Queue Management</a></li>
+                    <li><a href="#services">Telemedicine</a></li>
+                    <li><a href="#services">Cybersecurity</a></li>
+                    <li><a href="#services">CCTV Installation</a></li>
+                    <li><a href="#services">Software Solutions</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:info@afriqueue.com">info@afriqueue.com</a></li>
+                    <li><a href="tel:+254722581557">0722 581 557</a></li>
+                    <li><a href="#">Nairobi, Kenya</a></li>
+                    <li><a href="#">Mon - Fri: 8AM - 6PM</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2015 AfriQueue Technologies. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+        themeToggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            themeIcon.className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        });
+
+        // Navbar scroll
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Active nav link
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(s => { if (scrollY >= s.offsetTop - 200) current = s.getAttribute('id'); });
+            navLinks.forEach(l => {
+                l.classList.remove('active');
+                if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+            });
+        });
+
+        // Mobile menu
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const closeMenu = document.getElementById('closeMenu');
+        const overlay = document.getElementById('overlay');
+        const closeMobile = () => { mobileNav.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; };
+        menuToggle.addEventListener('click', () => { mobileNav.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; });
+        closeMenu.addEventListener('click', closeMobile);
+        overlay.addEventListener('click', closeMobile);
+        document.querySelectorAll('.mobile-nav a').forEach(a => a.addEventListener('click', closeMobile));
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                const t = document.querySelector(this.getAttribute('href'));
+                if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+</html>
